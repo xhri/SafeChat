@@ -1,5 +1,5 @@
 from safe_chat import SafeChatServer,SafeChatClient
-from encryptor import NoEncryptor
+from encryptor import RSA
 import asyncore
 from threading import Thread
 __author__ = 'rafal'
@@ -13,7 +13,7 @@ class Connection:
         self.thread=None
         self.log=log
         self.connected=False
-        self.crypto = NoEncryptor(self.log)
+        self.crypto = RSA(self.log)
         pass
 
     def loop(self):
@@ -53,4 +53,5 @@ class Connection:
     def send(self,str):
         if self.client is not None:
             self.client.send(str)
+
 

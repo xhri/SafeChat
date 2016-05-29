@@ -1,13 +1,9 @@
-from safe_chat import SafeChatClient, SafeChatServer
 import asyncore
-from threading import Thread
-from time import sleep
-from encryptor import NoEncryptor
 import inspect
 from Connection import Connection
-import curses
 import sys
 import colors
+from encryptor import RSA
 
 __author__ = 'rafal'
 
@@ -21,9 +17,6 @@ class Chat:
         for i in inspect.getmembers(self, predicate=inspect.ismethod):
             if i[0] not in ['__init__', 'hello_message', 'main_loop', 'parse_command', 'wrong_command', 'log']:
                 self.commands.append(i[0])
-        self.crypto_map = {}
-        for i in inspect.getmembers(sys.modules['encryptor'], inspect.isclass):
-            self.crypto_map[i[0]] = i[1]
 
     def log(self, str, col=colors.BLACK):
         colors.printout(str + "\n", col)
@@ -92,12 +85,6 @@ class Chat:
         self.connection.stop_if_running()
         return True
 
-    def show_crypto(self, com):
-        self.log("Available encryptors:")
-        for key in self.crypto_map:
-            self.log("-" + key)
-        return True
-
     def help(self, com):
         self.log("Available commands:")
         for i in self.commands:
@@ -107,16 +94,20 @@ class Chat:
     def h(self, com):
         return self.help(com)
 
-    def crypto(self, com):
-        if len(com.split(' ')) != 2 or com.split(' ')[1] not in self.crypto_map:
-            self.log("Proper use of 'crypto'", colors.YELLOW)
-            self.log(":crypto %name_of_crypto_algorithm%", colors.YELLOW)
-        else:
+    def set_key_len(self,com):
+        try:
+            if len(str(com).split(' ')) != 2:
+                raise Exception()
+            len = int(str(com).split(' ')[1])
             if not self.connection.connected:
-                self.connection.crypto=self.crypto_map[com.split(' ')[1]](self.log)
+                self.connection.crypto=RSA(self.log,len)
             else:
-                self.log("You have to be disconnected to change encryptor", colors.YELLOW)
+                self.log("You have to be disconnected",colors.YELLOW)
+        except Exception as e:
+            self.log("Proper use of 'set_key_len'", colors.YELLOW)
+            self.log(":set_key_len %key_length_in_bits% ", colors.YELLOW)
         return True
+
 
 
 def main():
