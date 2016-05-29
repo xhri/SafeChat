@@ -13,7 +13,7 @@ class Connection:
         self.thread=None
         self.log=log
         self.connected=False
-        self.crypto = NoEncryptor()
+        self.crypto = NoEncryptor(self.log)
         pass
 
     def loop(self):

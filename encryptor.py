@@ -1,7 +1,8 @@
 
-
 class NoEncryptor:
-    def __init__(self):
+    def __init__(self,log):
+        self.log=log
+        self.log("Zrobiono NoEncryptor")
         pass
 
     def encrypt(self,data):
