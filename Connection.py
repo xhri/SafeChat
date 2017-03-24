@@ -2,7 +2,7 @@ from safe_chat import SafeChatServer,SafeChatClient
 from encryptor import RSA
 import asyncore
 from threading import Thread
-__author__ = 'rafal'
+__author__ = 'xhri'
 
 
 class Connection:

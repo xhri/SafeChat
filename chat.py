@@ -7,7 +7,6 @@ from encryptor import RSA
 
 __author__ = 'rafal'
 
-
 class Chat:
     CHAT_SYMBOL = ">"
 
@@ -23,8 +22,8 @@ class Chat:
         print(self.CHAT_SYMBOL, end="\r")
 
     def hello_message(self):
-        print("Welcome to SafeChat v.0.1")
-        print("Here will be some instructions")
+        print("Welcome to SafeChat v.0.99")
+        print("Here should be some instructions, write help for more.")
 
     def parse_command(self, command):
         for com in self.commands:
@@ -68,11 +67,12 @@ class Chat:
 
     def connect(self, com):
         try:
-            if len(str(com).split(' ')) != 2:
+            if len(str(com).split(' ')) != 3:
                 raise Exception()
-            port = int(str(com).split(' ')[1])
+            port = int(str(com).split(' ')[2])
+            ip = str(com).split(' ')[1]
             self.log("Connecting to ip on port " + str(port))
-            self.connection.connect('localhost', port)
+            self.connection.connect(ip, port)
         except OSError as e:
             self.log("Exception:", colors.RED)
             self.log(e.args[1], colors.RED)
@@ -107,14 +107,3 @@ class Chat:
             self.log("Proper use of 'set_key_len'", colors.YELLOW)
             self.log(":set_key_len %key_length_in_bits% ", colors.YELLOW)
         return True
-
-
-
-def main():
-    chat = Chat()
-    chat.hello_message()
-    chat.main_loop()
-
-
-if __name__ == "__main__":
-    main()

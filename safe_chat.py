@@ -1,7 +1,7 @@
 import asyncore, socket
 import pickle
 import colors
-__author__ = 'rafal'
+__author__ = 'xhri'
 
 
 class SafeChatServer(asyncore.dispatcher):
@@ -13,7 +13,6 @@ class SafeChatServer(asyncore.dispatcher):
         self.set_reuse_addr()
         self.bind((host, port))
         self.listen(5)
-
 
     def handle_accept(self):
         pair = self.accept()
